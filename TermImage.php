@@ -32,6 +32,13 @@ class TermImage
             add_action( 'created_' . $tax, array ( $this, 'save_taxonomy_image' ), 10, 2 );
             add_action( $tax . '_edit_form_fields', array ( $this, 'update_taxonomy_image' ), 10, 2 );
             add_action( 'edited_' . $tax, array ( $this, 'updated_taxonomy_image' ), 10, 2 );
+
+            $that = $this;
+            add_action( 'admin_init', function() use ($tax, $that) {
+                add_filter( 'manage_' . $tax . '_custom_column', array ( $that, 'taxonomy_rows'),15, 3 );
+                add_filter( 'manage_edit-' . $tax . '_columns',  array ( $that, 'taxonomy_columns') );
+            });
+            
             
         }
 
@@ -171,4 +178,22 @@ class TermImage
     </script>
     <?php }
     
+
+    public function taxonomy_columns( $original_columns ) {
+
+        $new_columns = $original_columns;
+        array_splice( $new_columns, 2 );
+        $new_columns['taxonomy-image-id'] = esc_html__( 'Image', 'wpplugin' );
+        
+        return array_merge( $new_columns, $original_columns );
+    }
+    
+    public function taxonomy_rows( $row, $column_name, $term_id ) {
+
+        $t_id = $term_id;
+        $imgid = get_term_meta( $term_id, 'taxonomy-image-id', true );
+        echo wp_get_attachment_image( $imgid, array(100, 100) );
+
+    }
+
 }
