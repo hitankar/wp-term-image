@@ -86,7 +86,7 @@ class TermImage
     public function save_taxonomy_image ( $term_id, $tt_id ) {
         if( isset( $_POST['taxonomy-image-id'] ) && '' !== $_POST['taxonomy-image-id'] ){
         $image = $_POST['taxonomy-image-id'];
-        add_term_meta( $term_id, 'taxonomy-image-id', $image, true );
+        add_term_meta( $term_id, 'term_image', $image, true );
         }
     }
     
@@ -100,7 +100,7 @@ class TermImage
             <label for="taxonomy-image-id"><?php _e( 'Image', 'wpplugin' ); ?></label>
         </th>
         <td>
-            <?php $image_id = get_term_meta ( $term -> term_id, 'taxonomy-image-id', true ); ?>
+            <?php $image_id = get_term_meta ( $term -> term_id, 'term_image', true ); ?>
             <input type="hidden" id="taxonomy-image-id" name="taxonomy-image-id" value="<?php echo $image_id; ?>">
             <div id="taxonomy-image-wrapper">
             <?php if ( $image_id ) { ?>
@@ -123,9 +123,9 @@ class TermImage
     public function updated_taxonomy_image ( $term_id, $tt_id ) {
         if( isset( $_POST['taxonomy-image-id'] ) && '' !== $_POST['taxonomy-image-id'] ){
         $image = $_POST['taxonomy-image-id'];
-        update_term_meta ( $term_id, 'taxonomy-image-id', $image );
+        update_term_meta ( $term_id, 'term_image', $image );
         } else {
-        update_term_meta ( $term_id, 'taxonomy-image-id', '' );
+        update_term_meta ( $term_id, 'term_image', '' );
         }
     }
     
@@ -191,7 +191,7 @@ class TermImage
     public function taxonomy_rows( $row, $column_name, $term_id ) {
 
         $t_id = $term_id;
-        $imgid = get_term_meta( $term_id, 'taxonomy-image-id', true );
+        $imgid = get_term_meta( $term_id, 'term_image', true );
         echo wp_get_attachment_image( $imgid, array(100, 100) );
 
     }
