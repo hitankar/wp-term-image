@@ -164,6 +164,9 @@ class TermImage
         });
         // Thanks: http://stackoverflow.com/questions/15281995/wordpress-create-taxonomy-ajax-response
         $(document).ajaxComplete(function(event, xhr, settings) {
+            if (settings.data == undefined) {
+                return false;
+            }
             var queryStringArr = settings.data.split('&');
             if( $.inArray('action=add-tag', queryStringArr) !== -1 ){
                 var xml = xhr.responseXML;
